@@ -14,10 +14,10 @@ export const signUp = createAsyncThunk("auth/signUp", async ({ email, password }
   try {
     const auth = getAuth();
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    console.log('User signed up successfully:', userCredential.user.uid);
+   
     return userCredential.user;
   } catch (error) {
-    console.error('Error signing up:', error);
+   
     throw error;
   }
 });
