@@ -71,7 +71,7 @@ export default function Navbar() {
                 <span>{`${email.slice(0, 6)}`}</span>
               </div>
               <button
-                className="rounded-full px-5 py-1 border text-sm"
+                className="rounded-full px-5 py-1 border text-sm bg-black text-white"
                 onClick={handleLogout}
               >
                 Logout
@@ -80,13 +80,13 @@ export default function Navbar() {
           ) : (
             <>
               <button
-                className="rounded-full px-5 py-1 border text-sm"
+                className="rounded-full px-5 py-1 border text-sm  bg-black text-white"
                 onClick={handleOpenLoginModal}
               >
                 Login
               </button>
               <button
-                className="rounded-full px-5 py-1 border text-sm"
+                className="rounded-full px-5 py-1 border text-sm  bg-black text-white"
                 onClick={handleOpenSignUpModal}
               >
                 SignUp
