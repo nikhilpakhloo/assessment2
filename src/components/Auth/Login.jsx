@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { signIn } from "../../store/AuthSlice/AuthSlice";
 
 
-const Login = ({ title, toggle }) => {
+const Login = ({  toggle }) => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
 
