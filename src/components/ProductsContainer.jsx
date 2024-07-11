@@ -19,7 +19,6 @@ export default function ProductsContainer() {
 
   const [searchTerm, setSearchTerm] = useState("");
 
-
   // Fetch products from API on initial render
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
@@ -38,7 +37,9 @@ export default function ProductsContainer() {
     if (category === "All") {
       setFilteredProducts(products); // Show all products
     } else {
-      const filtered = products.filter((product) => product.category === category);
+      const filtered = products.filter(
+        (product) => product.category === category
+      );
       setFilteredProducts(filtered);
     }
   };
@@ -58,19 +59,23 @@ export default function ProductsContainer() {
       if (selectedCategory === "All") {
         setFilteredProducts(products);
       } else {
-        const filtered = products.filter((product) => product.category === selectedCategory);
+        const filtered = products.filter(
+          (product) => product.category === selectedCategory
+        );
         setFilteredProducts(filtered);
       }
     } else {
       // Filter products by search term
-      const filtered = products.filter(
-        (product) =>
-          product.title.toLowerCase().includes(searchTerm.toLowerCase())
+      const filtered = products.filter((product) =>
+        product.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredProducts(filtered);
     }
   };
-  const currentItems = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredProducts.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   return (
     <div className="mt-2 flex flex-col items-center justify-center">
@@ -78,9 +83,8 @@ export default function ProductsContainer() {
         selectedCategory={selectedCategory}
         onSelectCategory={handleCategorySelect}
       />
-         <SearchBar onSearch={handleSearch} />
+      <SearchBar onSearch={handleSearch} />
 
-      
       <div className="grid grid-cols-3 gap-10 place-content-center justify-center">
         {currentItems.map((item) => (
           <ProductCard key={item.id} data={item} />
