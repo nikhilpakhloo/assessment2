@@ -5,12 +5,16 @@ import { logout } from "../store/AuthSlice/AuthSlice";
 
 import Register from "./Auth/Register";
 import Login from "./Auth/Login";
+import { Link } from "react-router-dom";
+
 
 export default function Navbar() {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.userInfo);
   const { stsTokenManager, email, uid } = userData || {};
-  const accessToken = stsTokenManager?.accessToken; 
+  const accessToken = stsTokenManager?.accessToken;
+
+  const { totalQuantity } = useSelector((state) => state.cart); 
 
 
   const [isShowLogin, setIsShowLogin] = useState(false);
@@ -42,17 +46,22 @@ export default function Navbar() {
     <>
       {isShowLogin && <Login toggle={handleOpenLoginModal} />}
       {isShowRegister && <Register toggle={handleOpenSignUpModal} />}
-      <nav className="w-full h-16 flex items-center justify-between px-8 shadow-lg">
+      <nav className="w-full h-16 flex items-center justify-between px-8 shadow-lg sticky top-0  bg-white">
         <div className="flex items-center space-x-4">
+      
           <p className="font-semibold text-3xl">
-            Collections <span className="text-2xl text-red-700">.</span>{" "}
+          <Link to="/">     Collections <span className="text-2xl text-red-700">.</span>{" "}</Link>
           </p>
         </div>
 
         <div className="flex items-center space-x-6">
           {isLoggedIn ? (
             <>
-              {/* <BsCart size={24} className="cursor-pointer" />  */}
+              <Link to="cart">
+              <div className="flex gap-2 border p-2 rounded-xl">
+              {totalQuantity} items <BsCart size={24} className="cursor-pointer" />
+              </div>
+              </Link>
               <div className="avatar cursor-pointer flex items-center">
                 <img
                   src="https://static.vecteezy.com/system/resources/thumbnails/027/951/137/small_2x/stylish-spectacles-guy-3d-avatar-character-illustrations-png.png"
