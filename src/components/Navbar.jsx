@@ -52,7 +52,7 @@ export default function Navbar() {
         <div className="flex items-center space-x-6">
           {isLoggedIn ? (
             <>
-              {/* <BsCart size={24} className="cursor-pointer" /> */}
+              {/* <BsCart size={24} className="cursor-pointer" />  */}
               <div className="avatar cursor-pointer flex items-center">
                 <img
                   src="https://static.vecteezy.com/system/resources/thumbnails/027/951/137/small_2x/stylish-spectacles-guy-3d-avatar-character-illustrations-png.png"
