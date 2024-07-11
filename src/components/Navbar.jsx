@@ -9,7 +9,9 @@ import Login from "./Auth/Login";
 export default function Navbar() {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.userInfo);
-  const { accessToken, email, uid } = userData || {}; 
+  const { stsTokenManager, email, uid } = userData || {};
+  const accessToken = stsTokenManager?.accessToken; 
+
 
   const [isShowLogin, setIsShowLogin] = useState(false);
   const [isShowRegister, setIsShowRegister] = useState(false);
@@ -24,8 +26,8 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    dispatch(logout()); 
-    setIsLoggedIn(false)
+    dispatch(logout());
+    setIsLoggedIn(false);
   };
 
   useEffect(() => {
@@ -34,7 +36,7 @@ export default function Navbar() {
     } else {
       setIsLoggedIn(false);
     }
-  }, [accessToken, email, uid ]);
+  }, [accessToken, email, uid]);
 
   return (
     <>
@@ -48,29 +50,36 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center space-x-6">
-         
           {isLoggedIn ? (
             <>
-            <BsCart size={24} className="cursor-pointer" />
-            <div className="avatar cursor-pointer">
+              {/* <BsCart size={24} className="cursor-pointer" /> */}
+              <div className="avatar cursor-pointer flex items-center">
                 <img
-                  src="https://static.vecteezy.com/system/resources/thumbnails/027/951/137/small_2x/stylish-spectacles-guy-3d-avatar-character-illustrations-png.png" 
+                  src="https://static.vecteezy.com/system/resources/thumbnails/027/951/137/small_2x/stylish-spectacles-guy-3d-avatar-character-illustrations-png.png"
                   alt="User Avatar"
                   className="w-8 h-8 rounded-full"
                 />
+                <span>{`${email.slice(0, 6)}`}</span>
               </div>
-              <button className="rounded-full px-5 py-1 border text-sm" onClick={handleLogout}>
+              <button
+                className="rounded-full px-5 py-1 border text-sm"
+                onClick={handleLogout}
+              >
                 Logout
               </button>
-            
-              
             </>
           ) : (
             <>
-              <button className="rounded-full px-5 py-1 border text-sm" onClick={handleOpenLoginModal}>
+              <button
+                className="rounded-full px-5 py-1 border text-sm"
+                onClick={handleOpenLoginModal}
+              >
                 Login
               </button>
-              <button className="rounded-full px-5 py-1 border text-sm" onClick={handleOpenSignUpModal}>
+              <button
+                className="rounded-full px-5 py-1 border text-sm"
+                onClick={handleOpenSignUpModal}
+              >
                 SignUp
               </button>
             </>
