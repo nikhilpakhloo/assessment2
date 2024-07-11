@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
 import Pagination from "./Pagination";
 import ProductsFilter from "../Utils/ProductsFilter";
 import SearchBar from "../Utils/SearchBar";
+import { useProducts } from "../ProductContext";
 
 export default function ProductsContainer() {
-  const [products, setProducts] = useState([]);
+  const { products } = useProducts();
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
@@ -13,21 +15,15 @@ export default function ProductsContainer() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  // State for filtered products based on category
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
-
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Fetch products from API on initial render
+  // Initialize filtered products with all products when products data changes
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then((res) => res.json())
-      .then((json) => {
-        setProducts(json);
-        setFilteredProducts(json); // Initialize filtered products with all products
-      });
-  }, []);
+    if (products) {
+      setFilteredProducts(products);
+    }
+  }, [products]);
 
   // Function to handle category selection
   const handleCategorySelect = (category) => {
@@ -49,7 +45,7 @@ export default function ProductsContainer() {
     setCurrentPage(page);
   };
 
-  // Calculate current items based on filtered products
+  // Function to handle search
   const handleSearch = (searchTerm) => {
     setSearchTerm(searchTerm);
     setCurrentPage(1); // Reset to first page when searching
@@ -72,6 +68,8 @@ export default function ProductsContainer() {
       setFilteredProducts(filtered);
     }
   };
+
+  // Calculate current items based on filtered products
   const currentItems = filteredProducts.slice(
     indexOfFirstItem,
     indexOfLastItem
