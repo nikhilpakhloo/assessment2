@@ -38,7 +38,7 @@ export default function ProductsContainer() {
     if (category === "All") {
       setFilteredProducts(products); // Show all products
     } else {
-      const filtered = products.filter((product) => product.title === category);
+      const filtered = products.filter((product) => product.category === category);
       setFilteredProducts(filtered);
     }
   };
