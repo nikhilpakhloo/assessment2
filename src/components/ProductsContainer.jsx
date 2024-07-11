@@ -4,11 +4,13 @@ import Pagination from "./Pagination";
 import ProductsFilter from "../Utils/ProductsFilter";
 import SearchBar from "../Utils/SearchBar";
 import { useProducts } from "../ProductContext";
+import Skeleton from "./Skeleton/ProductSkeloton";
 
 export default function ProductsContainer() {
   const { products } = useProducts();
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true); // State for loading indicator
   const itemsPerPage = 5;
 
   // Calculate indexes for pagination
@@ -22,6 +24,7 @@ export default function ProductsContainer() {
   useEffect(() => {
     if (products) {
       setFilteredProducts(products);
+      setLoading(false); // Turn off loading indicator after initial data load
     }
   }, [products]);
 
@@ -75,6 +78,11 @@ export default function ProductsContainer() {
     indexOfLastItem
   );
 
+  // Array to generate multiple skeletons
+  const skeletonArray = Array.from({ length: 5 }, (_, index) => (
+    <Skeleton key={index} />
+  ));
+
   return (
     <div className="mt-2 flex flex-col items-center justify-center">
       <ProductsFilter
@@ -84,9 +92,14 @@ export default function ProductsContainer() {
       <SearchBar onSearch={handleSearch} />
 
       <div className="grid grid-cols-3 gap-10 place-content-center justify-center">
-        {currentItems.map((item) => (
-          <ProductCard key={item.id} data={item} />
-        ))}
+        {loading ? (
+          // Show skeleton loading for 1 second
+          <React.Fragment>{skeletonArray}</React.Fragment>
+        ) : (
+          currentItems.map((item) => (
+            <ProductCard key={item.id} data={item} />
+          ))
+        )}
       </div>
       <Pagination
         currentPage={currentPage}
