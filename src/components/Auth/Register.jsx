@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
+import useClickOutside from '../../hooks/useClickOutside'
+
 
 import { signUp } from "../../store/AuthSlice/AuthSlice";
 
@@ -12,6 +14,10 @@ export default function Register({ toggle }) {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const dispatch = useDispatch();
+  const registerRef = useClickOutside(() => {
+
+    toggle();
+  });
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -82,7 +88,7 @@ export default function Register({ toggle }) {
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-gray-400 bg-opacity-20 z-10">
-      <div className="relative bg-white w-[30rem] h-auto p-6 rounded-xl shadow-md flex flex-col items-center justify-evenly">
+      <div className="relative bg-white w-[30rem] h-auto p-6 rounded-xl shadow-md flex flex-col items-center justify-evenly" ref={registerRef}>
         <h1 className="text-2xl">Create a new Account</h1>
         <div className="absolute top-4 right-4 cursor-pointer hover:bg-gray-100 w-8 h-8 rounded-full flex justify-center items-center">
           <CgClose onClick={toggle} />

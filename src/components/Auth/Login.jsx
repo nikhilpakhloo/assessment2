@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { CgClose } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
 import { signIn } from "../../store/AuthSlice/AuthSlice";
+import useClickOutside from '../../hooks/useClickOutside'
 
 const Login = ({ toggle }) => {
   const dispatch = useDispatch();
@@ -12,7 +13,11 @@ const Login = ({ toggle }) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  // Clear errors after 2 seconds
+  const loginRef = useClickOutside(() => {
+
+    toggle();
+  });
+
   useEffect(() => {
     const errorTimeout = setTimeout(() => {
       setEmailError("");
@@ -31,13 +36,11 @@ const Login = ({ toggle }) => {
     }
   };
 
-  // Validate email format
   const validateEmail = (email) => {
     const emailRegex = /\S+@\S+\.\S+/;
     return emailRegex.test(email);
   };
 
-  // Validate password length
   const validatePassword = (password) => {
     return password.length >= 6;
   };
@@ -51,7 +54,6 @@ const Login = ({ toggle }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate email and password
     if (!validateEmail(email)) {
       setEmailError("Email is invalid");
       return;
@@ -70,7 +72,10 @@ const Login = ({ toggle }) => {
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-gray-400 bg-opacity-20 z-10">
-      <div className="relative bg-white w-[30rem] h-auto p-6 rounded-xl shadow-md flex flex-col items-center justify-evenly">
+      <div
+        ref={loginRef}
+        className="relative bg-white w-[30rem] h-auto p-6 rounded-xl shadow-md flex flex-col items-center justify-evenly"
+      >
         <h1 className="text-2xl">Sign in your account</h1>
         <div className="absolute top-4 right-4 cursor-pointer hover:bg-gray-100 w-8 h-8 rounded-full flex justify-center items-center">
           <CgClose onClick={toggle} />
