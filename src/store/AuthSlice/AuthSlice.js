@@ -37,7 +37,7 @@ export const signIn = createAsyncThunk("auth/signIn", async ({ email, password }
 // Logout
 export const logout = createAsyncThunk("auth/logout", async () => {
   try {
-    // const auth = getAuth();
+  
     await signOut(auth);
     return true;
   } catch (error) {
