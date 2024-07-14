@@ -23,7 +23,7 @@ export default function Cart() {
   };
 
   return (
-    <div className="mt-6 flex flex-wrap justify-center gap-10">
+    <div className="mt-6 flex flex-wrap justify-center gap-10" data-testid='cart-item'>
       {isLoading
         ? Array.from({ length: 5 }, (_, index) => (
             <Skeleton key={index} />
