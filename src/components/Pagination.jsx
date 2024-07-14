@@ -8,10 +8,12 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
       {pages.map(page => (
         <button
           key={page}
+       
           onClick={() => onPageChange(page)}
-          className={`mx-1 px-4 py-2 rounded ${
+          className={`mx-1 px-4 py-2 rounded  ${
             page === currentPage ? 'bg-blue-600 text-white' : 'bg-blue-200 text-blue-700 hover:bg-blue-300'
           }`}
+      role='button'
         >
           {page}
         </button>
