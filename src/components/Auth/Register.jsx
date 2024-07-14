@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -27,20 +27,58 @@ export default function Register({ toggle }) {
         break;
     }
   };
-  const onSubmit = async (e) => {
-    e.preventDefault();
+    // Validate email format
+    const validateEmail = (email) => {
+      const emailRegex = /\S+@\S+\.\S+/;
+      return emailRegex.test(email);
+    };
+  
+    // Validate password length
+    const validatePassword = (password) => {
+      return password.length >= 6;
+    };
+      // Clear errors after 2 seconds
+  useEffect(() => {
+    const errorTimeout = setTimeout(() => {
+      setEmailError("");
+      setPasswordError("");
+    }, 2000);
 
-    try {
-      await dispatch(signUp({ email, password }));
-      toggle();
-    } catch (error) {
-      if (error.response && error.response.status === 409) {
-        console.error("Email already exists.");
+    return () => clearTimeout(errorTimeout);
+  }, [emailError, passwordError]);
+  
+    const onSubmit = async (e) => {
+      e.preventDefault();
+    
+      const isEmailValid = validateEmail(email);
+      const isPasswordValid = validatePassword(password);
+    
+      if (!isEmailValid) {
+        setEmailError("Email is invalid");
       } else {
-        console.error("Authentication Error:", error);
+        setEmailError(""); // Clear error message if email is valid
       }
-    }
-  };
+    
+      if (!isPasswordValid) {
+        setPasswordError("Password must be at least 6 characters");
+      } else {
+        setPasswordError(""); // Clear error message if password is valid
+      }
+    
+      if (isEmailValid && isPasswordValid) {
+        try {
+          await dispatch(signUp({ email, password }));
+          toggle();
+        } catch (error) {
+          if (error.response && error.response.status === 409) {
+            console.error("Email already exists.");
+          } else {
+            console.error("Authentication Error:", error);
+          }
+        }
+      }
+    };
+    
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-gray-400 bg-opacity-20 z-10">
