@@ -1,33 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { CgClose } from "react-icons/cg";
-import { useDispatch, useSelector } from 'react-redux';
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase";
+import { useDispatch, useSelector } from "react-redux";
+
 import { signUp } from "../../store/AuthSlice/AuthSlice";
 
-
 export default function Register({ toggle }) {
- 
-  const { loading, error, success } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.auth);
 
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [userNameError, setUserNameError] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const dispatch = useDispatch()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const dispatch = useDispatch();
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     switch (name) {
-      case 'username':
-        setUserName(value);
-        break;
-      case 'signupemail':
+   
+      case "signupemail":
         setEmail(value);
         break;
-      case 'signuppassword':
+      case "signuppassword":
         setPassword(value);
         break;
       default:
@@ -37,15 +30,17 @@ export default function Register({ toggle }) {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-
     try {
-      await dispatch(signUp({ email, password })).then(()=> toggle());
+      await dispatch(signUp({ email, password }));
+      toggle();
     } catch (error) {
-      console.error("Authentication Error:", error);
+      if (error.response && error.response.status === 409) {
+        console.error("Email already exists.");
+      } else {
+        console.error("Authentication Error:", error);
+      }
     }
   };
-
-
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-gray-400 bg-opacity-20 z-10">
@@ -55,9 +50,11 @@ export default function Register({ toggle }) {
           <CgClose onClick={toggle} />
         </div>
 
-        <form className="flex flex-col w-full" id="signup-form" onSubmit={onSubmit}>
-         
-
+        <form
+          className="flex flex-col w-full"
+          id="signup-form"
+          onSubmit={onSubmit}
+        >
           <label htmlFor="signupemail">Email:</label>
           <input
             type="email"

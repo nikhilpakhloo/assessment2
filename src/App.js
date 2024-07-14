@@ -4,6 +4,8 @@ import Navbar from "./components/Navbar";
 import { ProductProvider } from "./ProductContext";
 import Cart from "./components/Cart";
 
+
+
 function App() {
   return (
     <>

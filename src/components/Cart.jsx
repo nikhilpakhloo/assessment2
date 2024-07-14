@@ -6,7 +6,7 @@ import Skeleton from "./Skeleton/ProductSkeloton";
 export default function Cart() {
   const dispatch = useDispatch();
   const { items } = useSelector((state) => state.cart);
-  console.log(items);
+
 
   const [isLoading, setIsLoading] = useState(true);
 

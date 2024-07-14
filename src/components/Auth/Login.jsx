@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CgClose } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
 import { signIn } from "../../store/AuthSlice/AuthSlice";
 
-
-const Login = ({  toggle }) => {
+const Login = ({ toggle }) => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
 
@@ -13,47 +12,58 @@ const Login = ({  toggle }) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+  // Clear errors after 2 seconds
+  useEffect(() => {
+    const errorTimeout = setTimeout(() => {
+      setEmailError("");
+      setPasswordError("");
+    }, 2000);
+
+    return () => clearTimeout(errorTimeout);
+  }, [emailError, passwordError]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "loginemail") {
       setEmail(value);
-      setEmailError(""); // Clear any previous error
     } else if (name === "loginpassword") {
       setPassword(value);
-      setPasswordError(""); // Clear any previous error
     }
   };
 
-  const validateForm = () => {
-    let isValid = true;
+  // Validate email format
+  const validateEmail = (email) => {
+    const emailRegex = /\S+@\S+\.\S+/;
+    return emailRegex.test(email);
+  };
 
-    if (!email.trim()) {
-      setEmailError("Email is required");
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      setEmailError("Email is invalid");
-      isValid = false;
+  // Validate password length
+  const validatePassword = (password) => {
+    return password.length >= 6;
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onSubmit(e);
     }
-
-    if (!password.trim()) {
-      setPasswordError("Password is required");
-      isValid = false;
-    }
-
-    return isValid;
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
+    // Validate email and password
+    if (!validateEmail(email)) {
+      setEmailError("Email is invalid");
+      return;
+    }
+    if (!validatePassword(password)) {
+      setPasswordError("Password must be at least 6 characters");
       return;
     }
 
     try {
-      await dispatch(signIn({ email, password })).then(()=> toggle());
+      await dispatch(signIn({ email, password })).then(() => toggle());
     } catch (error) {
-      toggle()
       console.error("Authentication Error:", error);
     }
   };
@@ -76,6 +86,7 @@ const Login = ({  toggle }) => {
             name="loginemail"
             value={email}
             onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
           />
           {emailError && <p className="text-red-500">{emailError}</p>}
           <label htmlFor="loginpassword">Password:</label>
@@ -86,6 +97,7 @@ const Login = ({  toggle }) => {
             name="loginpassword"
             value={password}
             onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
           />
           {passwordError && <p className="text-red-500">{passwordError}</p>}
           <button

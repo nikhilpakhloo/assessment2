@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { addItemToCart } from "../store/CartSlice/CartSlice";
 import { useDispatch } from "react-redux";
+import Button from "../Utils/Button";
 
 export default function ProductCard({ data }) {
   const dispatch = useDispatch();
@@ -25,13 +26,7 @@ export default function ProductCard({ data }) {
           <p className="text-gray-700 text-base ">{data.category}</p>
           <p className="text-gray-700 font-bold">${data.price}</p>
         </div>
-        <button
-          className={`border border-black p-2 ${addedToCart ? "bg-black text-white":"bg-white text-black"} rounded-2xl w-40 self-center`}
-          onClick={handleAddToCart}
-          disabled={addedToCart} 
-        >
-          {addedToCart ? "Added to Cart" : "Add to Cart"}
-        </button>
+        <Button addedToCart={addedToCart} handleAddToCart={handleAddToCart}/>
       </div>
     </div>
   );
