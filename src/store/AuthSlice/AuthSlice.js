@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {  createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { auth } from "../../firebase";
 
 const initialState = {
   loading: false,
@@ -12,7 +13,7 @@ const initialState = {
 // Sign Up
 export const signUp = createAsyncThunk("auth/signUp", async ({ email, password }) => {
   try {
-    const auth = getAuth();
+  
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
    
     return userCredential.user;
@@ -25,7 +26,7 @@ export const signUp = createAsyncThunk("auth/signUp", async ({ email, password }
 // Sign In
 export const signIn = createAsyncThunk("auth/signIn", async ({ email, password }) => {
   try {
-    const auth = getAuth();
+
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return userCredential.user;
   } catch (error) {
@@ -36,7 +37,7 @@ export const signIn = createAsyncThunk("auth/signIn", async ({ email, password }
 // Logout
 export const logout = createAsyncThunk("auth/logout", async () => {
   try {
-    const auth = getAuth();
+    // const auth = getAuth();
     await signOut(auth);
     return true;
   } catch (error) {

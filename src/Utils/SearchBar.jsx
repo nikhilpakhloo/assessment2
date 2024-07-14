@@ -5,7 +5,7 @@ export default function SearchBar({ onSearch }) {
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
-    onSearch(event.target.value); // Call the onSearch callback with the current search term
+    onSearch(event.target.value); 
   };
 
   return (
