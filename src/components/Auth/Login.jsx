@@ -82,7 +82,7 @@ const Login = ({ toggle }) => {
         </div>
 
         <form className="flex flex-col w-full" id="signin-form">
-          {error && <p className="text-red-500 mb-2">{error}</p>}
+          {/* {error && <p className="text-red-500 mb-2">{error}</p>} */}
           <label htmlFor="loginemail">Email:</label>
           <input
             type="email"

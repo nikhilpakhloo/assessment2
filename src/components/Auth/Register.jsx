@@ -129,7 +129,7 @@ export default function Register({ toggle }) {
             {loading ? "Signing up..." : "Sign up"}
           </button>
 
-          {error && <p className="text-red-500 mt-2">{error}</p>}
+          {/* {error && <p className="text-red-500 mt-2">{error}</p>} */}
         </form>
       </div>
     </div>
